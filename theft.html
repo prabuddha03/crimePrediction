@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kolkata Theft Hotspots</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script>
+      function initMap() {
+        // Center the map on Kolkata
+        var kolkata = { lat: 22.5726, lng: 88.3639 };
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: kolkata
+        });
+
+        // Define the locations prone to theft
+        var theftLocations = [
+          { lat: 22.5736, lng: 88.3473 },
+          { lat: 22.5664, lng: 88.3741 },
+          { lat: 22.5876, lng: 88.3888 },
+          { lat: 22.5543, lng: 88.3502 },
+          { lat: 22.5709, lng: 88.3604 },
+          { lat: 22.5601, lng: 88.3455 },
+          { lat: 22.5780, lng: 88.3963 },
+          { lat: 22.5458, lng: 88.3524 },
+          { lat: 22.5882, lng: 88.3657 },
+          { lat: 22.5790, lng: 88.3712 },
+          { lat: 22.5678, lng: 88.3522 },
+          { lat: 22.5520, lng: 88.3661 },
+          { lat: 22.5731, lng: 88.3840 }
+        ];
+
+        // Add green outline square markers to the map
+        theftLocations.forEach(function(location) {
+          var square = {
+            path: 'M -1,-1 1,-1 1,1 -1,1 z',
+            fillColor: 'green',
+            fillOpacity: 0,
+            scale: 20,
+            strokeColor: 'green',
+            strokeWeight: 2
+          };
+          new google.maps.Marker({
+            position: location,
+            map: map,
+            icon: square
+          });
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h3>Kolkata Theft Hotspots</h3>
+    <div id="map" style="height: 500px; width: 100%;"></div>
+  </body>
+</html>

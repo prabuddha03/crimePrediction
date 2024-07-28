@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Predictive Policing</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnveBGIHGiJf7TuEdIncwCE1YyKBc0XM0"></script>
+    <script>
+        function initMap() {
+            var mapOptions = {
+                zoom: 12,
+                center: new google.maps.LatLng(22.57, 88.36), // Centered around Kolkata
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+            // Listen for map clicks
+            google.maps.event.addListener(map, 'click', function(event) {
+                var latitude = event.latLng.lat();
+                var longitude = event.latLng.lng();
+                var area = document.getElementById('area').value;
+
+                fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ latitude: latitude, longitude: longitude, area: area })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.narcotics_crime) {
+                        alert('High risk of narcotics crime!');
+
+                        // Add a red square for high risk area
+                        var squareCoords = [
+                            {lat: latitude + 0.001, lng: longitude - 0.001},
+                            {lat: latitude + 0.001, lng: longitude + 0.001},
+                            {lat: latitude - 0.001, lng: longitude + 0.001},
+                            {lat: latitude - 0.001, lng: longitude - 0.001}
+                        ];
+
+                        var crimeSquare = new google.maps.Polygon({
+                            paths: squareCoords,
+                            strokeColor: '#FF0000',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                            fillColor: '#FF0000',
+                            fillOpacity: 0.35
+                        });
+                        crimeSquare.setMap(map);
+                    } else {
+                        alert('Low risk of narcotics crime.');
+
+                        // Add a green marker for low risk area
+                        new google.maps.Marker({
+                            position: new google.maps.LatLng(latitude, longitude),
+                            map: map,
+                            title: 'Low Risk Area',
+                            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                        });
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+    </script>
+</head>
+<body onload="initMap()">
+    <h1>Predictive Policing</h1>
+    <div>
+        <label for="area">Area:</label>
+        <select id="area">
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+            <option value="industrial">Industrial</option>
+        </select>
+    </div>
+    <div id="map" style="width: 100%; height: 500px;"></div>
+</body>
+</html>

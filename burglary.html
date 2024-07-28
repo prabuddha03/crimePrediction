@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kolkata Burglary Hotspots</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=IzaSyDnveBGIHGiJf7TuEdIncwCE1YyKBc0XM0&callback=initMap" async defer></script>
+    <script>
+      function initMap() {
+        // Center the map on Kolkata
+        var kolkata = { lat: 22.5726, lng: 88.3639 };
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: kolkata
+        });
+
+        // Define the locations prone to burglary
+        var burglaryLocations = [
+          { lat: 22.5512, lng: 88.3498 },
+          { lat: 22.5896, lng: 88.3817 },
+          { lat: 22.5418, lng: 88.3527 },
+          { lat: 22.5778, lng: 88.3981 },
+          { lat: 22.5594, lng: 88.3456 },
+          { lat: 22.5700, lng: 88.3940 },
+          { lat: 22.5614, lng: 88.3788 },
+          { lat: 22.5478, lng: 88.3600 },
+          { lat: 22.5923, lng: 88.3752 },
+          { lat: 22.5856, lng: 88.3889 },
+          { lat: 22.5667, lng: 88.3511 },
+          { lat: 22.5542, lng: 88.3620 },
+          { lat: 22.5789, lng: 88.3710 }
+        ];
+
+        // Add blue outline square markers to the map
+        burglaryLocations.forEach(function(location) {
+          var square = {
+            path: 'M -1,-1 1,-1 1,1 -1,1 z',
+            fillColor: 'blue',
+            fillOpacity: 0,
+            scale: 20,
+            strokeColor: 'blue',
+            strokeWeight: 2
+          };
+          new google.maps.Marker({
+            position: location,
+            map: map,
+            icon: square
+          });
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h3>Kolkata Burglary Hotspots</h3>
+    <div id="map" style="height: 500px; width: 100%;"></div>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kolkata Narcotics Crime Hotspots</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnveBGIHGiJf7TuEdIncwCE1YyKBc0XM0&callback=initMap" async defer></script>
+    <script>
+      function initMap() {
+        // Center the map on Kolkata
+        var kolkata = { lat: 22.5726, lng: 88.3639 };
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: kolkata
+        });
+
+        // Define the locations prone to narcotics crime
+        var crimeLocations = [
+          { lat: 22.5245, lng: 88.2788 }, // Shapoorji
+          { lat: 22.5926, lng: 88.3631 }, // Shovabazar
+          { lat: 22.4999, lng: 88.3700 }, // Jadavpur
+          { lat: 22.5365, lng: 88.3537 },
+          { lat: 22.6012, lng: 88.3773 },
+          { lat: 22.5740, lng: 88.4240 },
+          { lat: 22.5823, lng: 88.3300 },
+          { lat: 22.5583, lng: 88.3017 },
+          { lat: 22.5476, lng: 88.3430 },
+          { lat: 22.6074, lng: 88.3873 },
+          { lat: 22.5695, lng: 88.3705 },
+          { lat: 22.5947, lng: 88.4017 },
+          { lat: 22.5539, lng: 88.3938 }
+        ];
+
+        // Add red outline square markers to the map
+        crimeLocations.forEach(function(location) {
+          var square = {
+            path: 'M -1,-1 1,-1 1,1 -1,1 z',
+            fillColor: 'red',
+            fillOpacity: 0,
+            scale: 20,
+            strokeColor: 'red',
+            strokeWeight: 2
+          };
+          new google.maps.Marker({
+            position: location,
+            map: map,
+            icon: square
+          });
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h3>Kolkata Narcotics Crime Hotspots</h3>
+    <div id="map" style="height: 500px; width: 100%;"></div>
+  </body>
+</html>
